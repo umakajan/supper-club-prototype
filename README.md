@@ -7,10 +7,17 @@
 - The following business rules constrain API access:
   - Anyone can read menu items.
   - Only users with a menu-admin role are authorized to create, update, or delete menu items.
+- menu item has following properties:
+  - id: (number) Unique identifier for the item record
+  - name: (string) Name of the item
+  - price: (number) Price of the item in dollars
+  - description: (string) Description of the item
+  - image: (string) URL pointing to the item's image
 
 ## Future Implementation
 
 - store data in an external database
+- use webpack dev server
 
 ## Learning Resources
 
