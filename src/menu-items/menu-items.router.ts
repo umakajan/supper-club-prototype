@@ -7,6 +7,8 @@ import * as MenuItemService from "./menu-items.service";
 import { MenuItem } from "./menu-item.interface";
 import { MenuItems } from "./menu-items.interface";
 
+import { checkJwt } from "../middleware/auth.middleware";
+
 /**
  * Router Definition
  */
@@ -22,6 +24,8 @@ export const menuItemsRouter = express.Router();
 menuItemsRouter.get("/", async (req: Request, res: Response) => {
   try {
     const menuItems: MenuItems = await MenuItemService.findAll();
+
+    console.log(process.env);
 
     res.status(200).send(menuItems);
   } catch (e) {
@@ -42,6 +46,10 @@ menuItemsRouter.get("/:id", async (req: Request, res: Response) => {
     res.status(404).send(e.message);
   }
 });
+
+// Mount authorization middleware
+
+menuItemsRouter.use(checkJwt);
 
 // POST items/
 

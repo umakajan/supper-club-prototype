@@ -13,6 +13,7 @@
   - price: (number) Price of the item in dollars
   - description: (string) Description of the item
   - image: (string) URL pointing to the item's image
+- separate the public controllers from the protected controllers using the authorization middleware as a boundary between groups.
 
 ## Future Implementation
 
