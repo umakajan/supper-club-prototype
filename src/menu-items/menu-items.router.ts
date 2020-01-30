@@ -8,6 +8,8 @@ import { MenuItem } from "./menu-item.interface";
 import { MenuItems } from "./menu-items.interface";
 
 import { checkJwt } from "../middleware/auth.middleware";
+import { checkPermissions } from "../middleware/rbac.middleware";
+import { MenuItemPermissions } from "./menu-item-permissions";
 
 /**
  * Router Definition
@@ -24,8 +26,6 @@ export const menuItemsRouter = express.Router();
 menuItemsRouter.get("/", async (req: Request, res: Response) => {
   try {
     const menuItems: MenuItems = await MenuItemService.findAll();
-
-    console.log(process.env);
 
     res.status(200).send(menuItems);
   } catch (e) {
@@ -52,42 +52,55 @@ menuItemsRouter.get("/:id", async (req: Request, res: Response) => {
 menuItemsRouter.use(checkJwt);
 
 // POST items/
+// Since you are now adding two middleware functions on each write
+// controller, you need to bundle them in an array.
+menuItemsRouter.post(
+  "/",
+  [checkJwt, checkPermissions(MenuItemPermissions.CreateMenuItems)],
+  async (req: Request, res: Response) => {
+    try {
+      const menuItem: MenuItem = req.body.item;
 
-menuItemsRouter.post("/", async (req: Request, res: Response) => {
-  try {
-    const menuItem: MenuItem = req.body.menuItem;
+      await MenuItemService.create(menuItem);
 
-    await MenuItemService.create(menuItem);
-
-    res.sendStatus(201);
-  } catch (e) {
-    res.status(404).send(e.message);
+      res.sendStatus(201);
+    } catch (e) {
+      res.status(404).send(e.message);
+    }
   }
-});
+);
 
 // PUT items/
 
-menuItemsRouter.put("/", async (req: Request, res: Response) => {
-  try {
-    const menuItem: MenuItem = req.body.item;
+menuItemsRouter.put(
+  "/",
+  [checkJwt, checkPermissions(MenuItemPermissions.UpdateMenuItems)],
+  async (req: Request, res: Response) => {
+    try {
+      const menuItem: MenuItem = req.body.item;
 
-    await MenuItemService.update(menuItem);
+      await MenuItemService.update(menuItem);
 
-    res.sendStatus(200);
-  } catch (e) {
-    res.status(500).send(e.message);
+      res.sendStatus(200);
+    } catch (e) {
+      res.status(500).send(e.message);
+    }
   }
-});
+);
 
 // DELETE items/:id
 
-menuItemsRouter.delete("/:id", async (req: Request, res: Response) => {
-  try {
-    const id: number = parseInt(req.params.id, 10);
-    await MenuItemService.remove(id);
+menuItemsRouter.delete(
+  "/:id",
+  [checkJwt, checkPermissions(MenuItemPermissions.DeleteMenuItems)],
+  async (req: Request, res: Response) => {
+    try {
+      const id: number = parseInt(req.params.id, 10);
+      await MenuItemService.remove(id);
 
-    res.sendStatus(200);
-  } catch (e) {
-    res.status(500).send(e.message);
+      res.sendStatus(200);
+    } catch (e) {
+      res.status(500).send(e.message);
+    }
   }
-});
+);

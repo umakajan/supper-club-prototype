@@ -61,6 +61,8 @@ export const create = async (newMenuItem: MenuItem): Promise<void> => {
     ...newMenuItem,
     id
   };
+
+  console.log(menuItems);
 };
 
 export const update = async (updatedMenuItem: MenuItem): Promise<void> => {

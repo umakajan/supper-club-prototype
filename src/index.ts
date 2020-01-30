@@ -31,7 +31,7 @@ const app = express();
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
-app.use("/menu-items", menuItemsRouter);
+app.use("/items", menuItemsRouter);
 app.use(errorHandler);
 
 /**
