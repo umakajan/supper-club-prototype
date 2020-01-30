@@ -8,6 +8,7 @@ import cors from "cors";
 import helmet from "helmet";
 
 import { menuItemsRouter } from "./menu-items/menu-items.router";
+import { eventsRouter } from "./events/events.router";
 import { errorHandler } from "./middleware/error.middleware";
 
 dotenv.config();
@@ -31,7 +32,8 @@ const app = express();
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
-app.use("/items", menuItemsRouter);
+app.use("/menu-items", menuItemsRouter);
+app.use("/events", eventsRouter);
 app.use(errorHandler);
 
 /**
