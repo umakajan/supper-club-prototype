@@ -9,7 +9,7 @@ import { MenuItems } from "./menu-items.interface";
 
 import { checkJwt } from "../middleware/auth.middleware";
 import { checkPermissions } from "../middleware/rbac.middleware";
-import { MenuItemPermissions } from "./menu-item-permissions";
+import { MenuItemPermissions } from "./menu-item.permissions";
 
 /**
  * Router Definition
